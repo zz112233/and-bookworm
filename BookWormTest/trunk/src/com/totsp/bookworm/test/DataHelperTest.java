@@ -9,10 +9,17 @@ import java.util.Date;
 
 public class DataHelperTest extends AndroidTestCase {
 
-   public void testInsertBook() {
-      DataHelper dataHelper = new DataHelper(this.getContext());
+   private DataHelper dh;
+   
+   public void setUp() throws Exception {
+      super.setUp();
+      // have to do this in setup, per test, can't use ctor (strange errors)
+      this.dh = new DataHelper(this.getContext());
+   }
+   
+   public void testBook() {      
       Book b1 = new Book(0, "1231", "title1", 0, new Date());
-      dataHelper.insertBook(b1);      
+      dh.insertBook(b1);      
    }
    
 }
