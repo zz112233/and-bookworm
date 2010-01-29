@@ -1,3 +1,4 @@
+package com.totsp.bookworm.model;
 
 
 import com.totsp.bookworm.model.Book;

@@ -1,3 +1,4 @@
+package com.tosp.bookworm.data;
 
 
 import com.totsp.bookworm.data.GoogleBooksHandler;
@@ -25,7 +26,7 @@ public class GoogleBooksHandlerTest extends TestCase {
       try {
          GoogleBooksHandler handler = new GoogleBooksHandler();
 
-         File file = new File("/home/ccollins/projects/BookWorm/docs/book_search_response.xml");
+         File file = new File("res/book_search_response.xml");
          is = new FileInputStream(file);
 
          XMLReader r = XMLReaderFactory.createXMLReader();
