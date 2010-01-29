@@ -85,9 +85,17 @@ public class DataHelperTest extends AndroidTestCase {
       Set<Author> authors2 = new HashSet<Author>();
       authors2.add(a1);
       
-      Book b1 = new Book("1231", "book1", authors1, new Date());
-      Book b2 = new Book("1232", "book2", authors1, new Date());
-      Book b3 = new Book("1233", "book3", authors2, new Date());      
+      Book b1 = new Book("1231", "book1");
+      b1.setDescription("desc");
+      b1.setFormat("format");
+      b1.setOverviewUrl("overviewUrl");
+      b1.setPublisher("pub");
+      b1.setSubject("subject");   
+      b1.setAuthors(authors1);
+      Book b2 = new Book("1232", "book2");
+      b2.setAuthors(authors1);
+      Book b3 = new Book("1233", "book3");  
+     
       this.dh.insertBook(b1);
       this.dh.insertBook(b2);
       this.dh.insertBook(b3);            
@@ -97,6 +105,12 @@ public class DataHelperTest extends AndroidTestCase {
       Book b2r = this.dh.selectBook("1232");
       Book b3r = this.dh.selectBook("1233");      
       Assert.assertEquals("book1", b1r.getTitle());      
+      Assert.assertEquals("desc", b1r.getDescription());      
+      Assert.assertEquals("format", b1r.getFormat());      
+      Assert.assertEquals("overviewUrl", b1r.getOverviewUrl());      
+      Assert.assertEquals("pub", b1r.getPublisher());      
+      Assert.assertEquals("subject", b1r.getSubject());  
+      Assert.assertEquals(3, b1r.getAuthors().size());
       Assert.assertEquals("book2", b2r.getTitle());      
       Assert.assertEquals("book3", b3r.getTitle());      
       
