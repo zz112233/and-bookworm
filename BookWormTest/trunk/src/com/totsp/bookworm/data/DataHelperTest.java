@@ -2,11 +2,9 @@ package com.totsp.bookworm.data;
 
 import android.test.AndroidTestCase;
 
-import com.totsp.bookworm.data.DataHelper;
 import com.totsp.bookworm.model.Author;
 import com.totsp.bookworm.model.Book;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,8 +18,8 @@ public class DataHelperTest extends AndroidTestCase {
       super.setUp();
       // have to do this in setup, per test, can't use ctor (strange errors)
       this.dh = new DataHelper(this.getContext());
-   }
-
+   }   
+   
    public void testAuthor() {
       // more of an integration test for now, but, does the job
 
