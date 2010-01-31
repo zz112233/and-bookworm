@@ -102,7 +102,6 @@ public class DataHelperTest extends AndroidTestCase {
       Book b1 = new Book("1231", "book1");
       b1.setDescription("desc");
       b1.setFormat("format");
-      b1.setOverviewUrl("overviewUrl");
       b1.setPublisher("pub");
       b1.setSubject("subject");
       b1.setAuthors(authors1);
@@ -111,7 +110,6 @@ public class DataHelperTest extends AndroidTestCase {
       Book b2 = new Book("1232", "book2");
       b2.setDescription("desc");
       b2.setFormat("format");
-      b2.setOverviewUrl("overviewUrl");
       b2.setPublisher("pub");
       b2.setSubject("subject");
       b2.setAuthors(authors2);
@@ -120,7 +118,6 @@ public class DataHelperTest extends AndroidTestCase {
       Book b3 = new Book("1233", "book3");
       b3.setDescription("desc");
       b3.setFormat("format");
-      b3.setOverviewUrl("overviewUrl");
       b3.setPublisher("pub");
       b3.setSubject("subject");
       b3.setAuthors(authors3);
@@ -131,7 +128,6 @@ public class DataHelperTest extends AndroidTestCase {
       Assert.assertEquals("book1", b1r.getTitle());
       Assert.assertEquals("desc", b1r.getDescription());
       Assert.assertEquals("format", b1r.getFormat());
-      Assert.assertEquals("overviewUrl", b1r.getOverviewUrl());
       Assert.assertEquals("pub", b1r.getPublisher());
       Assert.assertEquals("subject", b1r.getSubject());
       Assert.assertEquals(2, b1r.getAuthors().size());
@@ -143,7 +139,6 @@ public class DataHelperTest extends AndroidTestCase {
       Assert.assertEquals("book2", b2r.getTitle());
       Assert.assertEquals("desc", b2r.getDescription());
       Assert.assertEquals("format", b2r.getFormat());
-      Assert.assertEquals("overviewUrl", b2r.getOverviewUrl());
       Assert.assertEquals("pub", b2r.getPublisher());
       Assert.assertEquals("subject", b2r.getSubject());
       Assert.assertEquals(2, b2r.getAuthors().size());
@@ -155,7 +150,6 @@ public class DataHelperTest extends AndroidTestCase {
       Assert.assertEquals("book3", b3r.getTitle());
       Assert.assertEquals("desc", b3r.getDescription());
       Assert.assertEquals("format", b3r.getFormat());
-      Assert.assertEquals("overviewUrl", b3r.getOverviewUrl());
       Assert.assertEquals("pub", b3r.getPublisher());
       Assert.assertEquals("subject", b3r.getSubject());
       Assert.assertEquals(4, b3r.getAuthors().size());
