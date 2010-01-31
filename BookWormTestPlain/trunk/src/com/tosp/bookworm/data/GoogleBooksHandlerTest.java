@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 // gotta use Junit3 and extend TestCase - to run this in Eclipse without extra config
@@ -35,9 +36,12 @@ public class GoogleBooksHandlerTest extends TestCase {
 
          System.out.println("getBooks");
          List<Book> books = handler.getBooks();
-         for (Book book : books) {
-            System.out.println("book - " + book);
-         }
+         Assert.assertEquals(1, books.size());
+         Book book = books.get(0);
+         Assert.assertEquals("Unlocking Android", book.getTitle());
+         Assert.assertEquals("A Developer's Guide", book.getSubTitle());
+         Assert.assertEquals(3, book.getAuthors().size());
+         System.out.println(book.toStringFull());
       } finally {
          if (is != null) {
             is.close();
