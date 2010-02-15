@@ -41,7 +41,39 @@ public class GoogleBooksHandlerTest extends TestCase {
          Assert.assertEquals("Unlocking Android", book.getTitle());
          Assert.assertEquals("A Developer's Guide", book.getSubTitle());
          Assert.assertEquals(3, book.getAuthors().size());
-         System.out.println(book.toStringFull());
+         ///System.out.println(book.toStringFull());
+      } finally {
+         if (is != null) {
+            is.close();
+         }
+      }
+   }
+   
+   public void testParseMult() throws Exception {
+
+      InputStream is = null;
+      try {
+         GoogleBooksHandler handler = new GoogleBooksHandler();
+
+         File file = new File("res/book_search_mult_response.xml");
+         is = new FileInputStream(file);
+
+         XMLReader r = XMLReaderFactory.createXMLReader();
+         r.setContentHandler(handler);
+         r.parse(new InputSource(is));
+
+         System.out.println("getBooks");
+         List<Book> books = handler.getBooks();
+         for (Book b : books) {
+            ///System.out.println("book - " + b.toString());
+         }
+        
+         Assert.assertEquals(10, books.size());
+         Book book = books.get(0);
+         Assert.assertEquals("Android", book.getTitle());
+         Assert.assertEquals("a programmer's guide", book.getSubTitle());
+         Assert.assertEquals(1, book.getAuthors().size());
+         System.out.println(book.toStringFull());         
       } finally {
          if (is != null) {
             is.close();
