@@ -18,9 +18,9 @@ public class BookTest extends TestCase {
       
       //Author a1 = new Author("author1");      
       
-      Book b1 = new Book("1231565699", "title1");     
-      Book b2 = new Book("1232565699", "title2");      
-      Book b3 = new Book("1233565699", "title3");
+      Book b1 = new Book("title1");     
+      Book b2 = new Book("title2");      
+      Book b3 = new Book("title3");
       List<Book> books1 = new ArrayList<Book>();
       books1.add(b1);
       books1.add(b2);
