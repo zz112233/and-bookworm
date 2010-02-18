@@ -43,7 +43,7 @@ public class GoogleBooksHandlerTest extends TestCase {
          Assert.assertEquals(3, book.getAuthors().size());
          Assert.assertEquals("1933988673", book.getIsbn10());
          Assert.assertEquals("9781933988672", book.getIsbn13());
-         System.out.println(book.toStringFull());
+         //System.out.println(book.toStringFull());
       } finally {
          if (is != null) {
             is.close();
