@@ -99,7 +99,7 @@ public class DataHelperTest extends AndroidTestCase {
       authors3.addAll(authors1);
       authors3.addAll(authors2);
 
-      Book b1 = new Book("1231", "book1");
+      Book b1 = new Book("book1");
       b1.setDescription("desc");
       b1.setFormat("format");
       b1.setPublisher("pub");
@@ -107,7 +107,7 @@ public class DataHelperTest extends AndroidTestCase {
       b1.setAuthors(authors1);
       this.dh.insertBook(b1);
 
-      Book b2 = new Book("1232", "book2");
+      Book b2 = new Book("book2");
       b2.setDescription("desc");
       b2.setFormat("format");
       b2.setPublisher("pub");
@@ -115,7 +115,7 @@ public class DataHelperTest extends AndroidTestCase {
       b2.setAuthors(authors2);
       this.dh.insertBook(b2);
 
-      Book b3 = new Book("1233", "book3");
+      Book b3 = new Book("book3");
       b3.setDescription("desc");
       b3.setFormat("format");
       b3.setPublisher("pub");
@@ -124,7 +124,7 @@ public class DataHelperTest extends AndroidTestCase {
       this.dh.insertBook(b3);
       
       // select
-      Book b1r = this.dh.selectBook("1231");
+      Book b1r = this.dh.selectBook("book1");
       Assert.assertEquals("book1", b1r.getTitle());
       Assert.assertEquals("desc", b1r.getDescription());
       Assert.assertEquals("format", b1r.getFormat());

@@ -19,7 +19,7 @@ public class DataImageHelperTest extends AndroidTestCase {
    public void testSaveImage() {      
       
       Bitmap bitmap = BitmapFactory.decodeResource(this.getContext().getResources(), android.R.drawable.btn_star_big_on);
-      this.dih.saveImage("testing1", bitmap);
+      this.dih.saveBitmap("testing1", bitmap);
       
    }
    
