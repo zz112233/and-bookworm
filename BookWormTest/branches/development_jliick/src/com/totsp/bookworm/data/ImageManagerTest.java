@@ -4,22 +4,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.test.AndroidTestCase;
 
-import com.totsp.bookworm.data.DataImageHelper;
+public class ImageManagerTest extends AndroidTestCase {
 
-public class DataImageHelperTest extends AndroidTestCase {
-
-   private DataImageHelper dih;
+   private ImageManager dih;
    
    public void setUp() throws Exception {
       super.setUp();
       // have to do this in setup, per test, can't use ctor (strange errors)
-      this.dih = new DataImageHelper(this.getContext(), "BookWorm", "BookWorm Cover Images", true);
+      this.dih = new ImageManager(this.getContext());
    }
    
    public void testSaveImage() {      
       
       Bitmap bitmap = BitmapFactory.decodeResource(this.getContext().getResources(), android.R.drawable.btn_star_big_on);
-      this.dih.saveBitmap("testing1", bitmap);
+      this.dih.storeBitmap(bitmap, "testing1", 0L);
       
    }
    
