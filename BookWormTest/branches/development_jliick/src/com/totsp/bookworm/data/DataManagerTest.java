@@ -3,9 +3,11 @@ package com.totsp.bookworm.data;
 
 import java.util.ArrayList;
 
+import com.totsp.bookworm.data.DataConstants;
 import com.totsp.bookworm.data.DataManager;
 import com.totsp.bookworm.model.Author;
 import com.totsp.bookworm.model.Book;
+import com.totsp.bookworm.model.Tag;
 
 import android.content.Context;
 import android.test.AndroidTestCase;
@@ -35,7 +37,7 @@ public class DataManagerTest  extends AndroidTestCase  {
 	private static final String AUTHOR_3 = "Dee Bugher";
 	
 	private Context context;
-	private DataManager dataMgr;
+	private InstrumentedDataManager dataMgr;
     
 	// Define books objects that can be used for multiple tests
 	private Book book1;
@@ -54,7 +56,7 @@ public class DataManagerTest  extends AndroidTestCase  {
         
         context = getContext();
 
-        dataMgr = new DataManager(context);
+        dataMgr = new InstrumentedDataManager(context);
         dataMgr.deleteAllDataYesIAmSure();
         
     	book1 = new Book(BOOK_TITLE_1);
@@ -84,6 +86,13 @@ public class DataManagerTest  extends AndroidTestCase  {
     	assertNotNull(context);
     	assertNotNull(dataMgr);   	
     	
+    	assertEquals(0, dataMgr.countFromTable(DataConstants.BOOK_TABLE, ""));
+    	assertEquals(0, dataMgr.countFromTable(DataConstants.BOOKAUTHOR_TABLE, ""));
+    	assertEquals(0, dataMgr.countFromTable(DataConstants.AUTHOR_TABLE, ""));
+    	assertEquals(0, dataMgr.countFromTable(DataConstants.BOOKUSERDATA_TABLE, ""));
+    	
+    	assertEquals(0, dataMgr.countFromTable(DataConstants.TAG_TABLE, ""));
+    	assertEquals(0, dataMgr.countFromTable(DataConstants.TAG_BOOKS_TABLE, ""));
     }	
  
     
@@ -91,7 +100,12 @@ public class DataManagerTest  extends AndroidTestCase  {
     public void testInsertBook() {
     	ArrayList<Book> books;
     	Book book;
-    	    	    	
+    	
+       	int initBookCount = dataMgr.countFromTable(DataConstants.BOOK_TABLE, "");
+       	int initAuthorCount = dataMgr.countFromTable(DataConstants.AUTHOR_TABLE, "");
+       	int initBookAuthorCount = dataMgr.countFromTable(DataConstants.BOOKAUTHOR_TABLE, "");
+       	int initUserBookCount = dataMgr.countFromTable(DataConstants.BOOKUSERDATA_TABLE, "");
+    	    	
     	dataMgr.insertBook(book1);
     	dataMgr.insertBook(book2);
     	dataMgr.insertBook(book3);
@@ -124,10 +138,127 @@ public class DataManagerTest  extends AndroidTestCase  {
        	assertTrue(book.authors.get(0).name.equals(AUTHOR_2) || book.authors.get(0).name.equals(AUTHOR_3));
        	assertTrue(book.authors.get(1).name.equals(AUTHOR_2) || book.authors.get(1).name.equals(AUTHOR_3));
     	    	
-    	books = dataMgr.selectAllBooks();
-    	assertEquals(3, books.size());
+       	assertEquals(initBookCount+3, dataMgr.countFromTable(DataConstants.BOOK_TABLE, ""));
+     	assertEquals(initAuthorCount+3, dataMgr.countFromTable(DataConstants.AUTHOR_TABLE, ""));
+     	assertEquals(initBookAuthorCount+4, dataMgr.countFromTable(DataConstants.BOOKAUTHOR_TABLE, ""));
+     	assertEquals(initUserBookCount+3, dataMgr.countFromTable(DataConstants.BOOKUSERDATA_TABLE, ""));
+    }
+  
+    
+    
+    
+    public void testInsertTag() {
+    	int initCount = dataMgr.countFromTable(DataConstants.TAG_TABLE, "");
+    	dataMgr.insertTag(new Tag("Lost?"));
+    	dataMgr.insertTag(new Tag("Series: Travis McGee"));
+    	assertEquals(initCount+2, dataMgr.countFromTable(DataConstants.TAG_TABLE, ""));
+    }
+  
+    
+    /**
+     * Verifies that the user cannot insert duplicate tags
+     */
+    public void testDuplicateTag() {
+    	int origCount;
+    	
+       	origCount = dataMgr.countFromTable(DataConstants.TAG_TABLE, "");
+       	assertFalse(dataMgr.insertTag(new Tag("Duplicate")) == 0);
+     	assertTrue(dataMgr.insertTag(new Tag("Duplicate")) == 0);
+    	
+    	assertEquals(origCount+1, dataMgr.countFromTable(DataConstants.TAG_TABLE, ""));
+    }
+ 
+    
+    /**
+     * Verifies that the user cannot add tags identical to built-in tags
+     */
+    public void testInsertBuiltInTag() {
+    	int origCount = dataMgr.countFromTable(DataConstants.TAG_TABLE, "");
+    	
+    	dataMgr.insertTag(new Tag("Own"));
+    	dataMgr.insertTag(new Tag("Read"));
+    	
+    	assertEquals(origCount, dataMgr.countFromTable(DataConstants.TAG_TABLE, ""));
+    }
+  
+    
+    /**
+     * Verifies that the user cannot delete tags  built-in tags
+     */
+    public void testDeleteBuiltInTag() {
+    	int origCount = dataMgr.countFromTable(DataConstants.TAG_TABLE, "");
+    	Tag tag;
+    	
+    	// Verify that the built-in tags do exist
+       	assertEquals(1, dataMgr.countFromTable(DataConstants.TAG_TABLE, "where tags.ttext=\"Own\""));
+       	assertEquals(1, dataMgr.countFromTable(DataConstants.TAG_TABLE, "where tags.ttext=\"Read\""));
        	
-    }  
+       	// Attempt to delete them
+       	tag = dataMgr.selectTag("Own"); 
+    	dataMgr.deleteTag(tag.id);
+    	
+       	tag = dataMgr.selectTag("Read"); 
+    	dataMgr.deleteTag(tag.id);
+    	
+    	assertEquals(origCount, dataMgr.countFromTable(DataConstants.TAG_TABLE, ""));
+    }
+    
+ 
+    
+    
+    public void testTagBook() {
+    	long tag1Id;
+    	long tag2Id;
+    	long book1Id;
+    	long book2Id;
+    	long book3Id;
+     	int initCount = dataMgr.countFromTable(DataConstants.TAG_BOOKS_TABLE, "");
+    	    	
+     	tag1Id = dataMgr.insertTag(new Tag("Programming"));    	
+     	tag2Id = dataMgr.insertTag(new Tag("Mine"));
+    	
+    	book1Id = dataMgr.insertBook(book1);
+       	dataMgr.addTagToBook(tag1Id, book1Id);
+       	dataMgr.addTagToBook(tag2Id, book1Id);
+       	
+       	book2Id = dataMgr.insertBook(book2);
+       	dataMgr.addTagToBook(tag1Id, book2Id);
+       	dataMgr.addTagToBook(tag2Id, book2Id);
+       	
+       	book3Id = dataMgr.insertBook(book3);
+       	dataMgr.addTagToBook(tag2Id, book3Id);
+    	 
+ 
+       	assertTrue(dataMgr.isTagged(tag1Id, book1Id));
+       	assertTrue(dataMgr.isTagged(tag1Id, book2Id));
+       	assertFalse(dataMgr.isTagged(tag1Id, book3Id));
+       	
+       	assertTrue(dataMgr.isTagged(tag2Id, book1Id));       	
+       	assertTrue(dataMgr.isTagged(tag2Id, book2Id));
+       	assertTrue(dataMgr.isTagged(tag2Id, book3Id));
+       	
+    	assertEquals(initCount+5, dataMgr.countFromTable(DataConstants.TAG_BOOKS_TABLE, ""));
+    }
+  
+    
+    
+    
+    /**
+     *  Sub-class of DataManager, exposing protected interfaces for testing. 
+     *
+     */
+    private class InstrumentedDataManager extends DataManager {
+		public InstrumentedDataManager(Context context) {
+			super(context);
+		} 
+		
+		public int countFromTable(String table, final String whereClause) {
+			return getCountFromTable(table, whereClause);
+		}
+    }
+
+    
+    
     
 }    
    
