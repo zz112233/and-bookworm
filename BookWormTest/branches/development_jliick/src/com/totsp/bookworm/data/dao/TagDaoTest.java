@@ -94,7 +94,7 @@ public class TagDaoTest  extends AndroidTestCase  {
     }
   
     /**
-     * Verifies that the user cannot delete tags  built-in tags
+     * Verifies that the user cannot delete built-in tags
      */
     public void testDeleteBuiltInTag() {
     	int origCount = getCountFromTable(DataConstants.TAG_TABLE, "");
@@ -105,13 +105,12 @@ public class TagDaoTest  extends AndroidTestCase  {
        	
        	// Attempt to delete them
     	tagDAO.delete("Own");
-    	tagDAO.delete("Series");
+    	tagDAO.delete("Read");
     	
     	assertEquals(origCount, getCountFromTable(DataConstants.TAG_TABLE, ""));
     }
     
-    
-    
+        
     private int getCountFromTable(final String table, final String whereClause) {
         int result = 0;
         Cursor c = db.rawQuery("select count(*) from " + table + " " + whereClause, null);
