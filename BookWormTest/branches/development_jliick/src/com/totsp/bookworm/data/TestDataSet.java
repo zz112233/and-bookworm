@@ -16,6 +16,22 @@ public class TestDataSet {
 	
 	static final private int MAX_NUM_AUTHORS = 4;
 	static final private int MIN_NUM_AUTHORS = 1;
+	static final private String[] subjects = {"Fiction", "History", "Biography", "Science", "Philosopy", "Computers"};
+	
+	static final private String[] firstNames = { "Alice", "Bob", "Charlie", "Doug",	"Edith", "Francis",	"Geoff",
+		"Helen", "Irene", "Jason", "Keith",	"Laura", "Michael", "Nicol", "Oscar", "Patty", "Roger", "Samuel",
+		"Thomas", "Veronica", "William", "Xavier", "Yvette"
+	};
+	
+	
+	static final private String[] lastNames = { "Adams", "Brown", "Charles", "Doe", "Evans", "Farley", "George",
+		"Harris", "Jones", "Lee", "Murry", "Nicolas", "O'Brien", "Peters", "Ryan", "Smith", "Thomas", "Von Smythe", 
+		"Williams"		
+	};
+	
+	static final private String[] publisherSuffix = {" & Sons", " Ltd", " & Co"};
+	
+	
 	private ArrayList<Book> books;
 	private ArrayList<Author> authors;
 	private ArrayList<Tag> tags;
@@ -48,6 +64,14 @@ public class TestDataSet {
 		return authors.get(rnd.nextInt(authors.size()));
 	}
 	
+	public String getRandomSubject() {
+		return subjects[rnd.nextInt(subjects.length)];
+	}
+	
+	public String getRandomPublisher() {
+		return lastNames[rnd.nextInt(lastNames.length)] + publisherSuffix[rnd.nextInt(publisherSuffix.length)];
+	}
+	
 	/**
 	 * Create the specified number of fake books.
 	 */
@@ -66,6 +90,10 @@ public class TestDataSet {
 	     	book.isbn10 = String.format("%010d", i);
 	    	book.isbn13 = String.format("%013d", i);
 	 
+	    	book.subject = getRandomSubject();
+	    	book.publisher = getRandomPublisher();
+	    	book.datePubStamp = (long) (rnd.nextFloat() * System.currentTimeMillis());
+	    	
 	    	books.add(book);
 		}
 	}
@@ -73,7 +101,9 @@ public class TestDataSet {
 	
 	public void createFakeAuthors(final int numAuthors) {
 		for (int i = 0; i < numAuthors; i++) {
-			authors.add(new Author(String.format("John Doe%d", i)));
+			authors.add(new Author(firstNames[rnd.nextInt(firstNames.length)] + " "
+			                       + String.valueOf(((char)(rnd.nextInt(26)+'A')) + ". "
+			                       + lastNames[rnd.nextInt(lastNames.length)])));
 		}
 	}
 	

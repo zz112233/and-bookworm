@@ -30,8 +30,8 @@ import android.util.Log;
  */
 public class TagIntegrationTests  extends AndroidTestCase  {
 	
-	static private final int NUM_BOOK_ENTRIES = 15; 
-	static private final int NUM_AUTHOR_ENTRIES = 10; 
+	static private final int NUM_BOOK_ENTRIES = 20; 
+	static private final int NUM_AUTHOR_ENTRIES = 20; 
 	static private final int NUM_TAG_ENTRIES = 10; 
 	
 	static private final int ALL_TAGS_BOOK_ID = NUM_TAG_ENTRIES + 1;
